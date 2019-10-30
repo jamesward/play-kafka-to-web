@@ -1,4 +1,6 @@
-enablePlugins(SbtTwirl)
+enablePlugins(SbtTwirl, JavaAppPackaging)
+
+name := "play-kafka-to-web"
 
 scalaSource in Compile := baseDirectory.value / "app"
 
@@ -15,5 +17,3 @@ libraryDependencies := Seq(
   "com.typesafe.akka" %% "akka-stream-kafka" % "1.1.0",
   "org.slf4j" % "slf4j-simple" % "1.7.21",
 )
-
-enablePlugins(JavaAppPackaging)

@@ -35,7 +35,7 @@ object ServerApp extends App {
       }
       case GET(p"/questions") => WebSocket.accept[String, String] { _ =>
         val sink = Sink.ignore
-        val source = kafkaSource("stackoverflow-questions").map(_.value())
+        val source = kafkaSource(configuration.get[String]("kafka.topic")).map(_.value())
         Flow.fromSinkAndSource(sink, source)
       }
     }
