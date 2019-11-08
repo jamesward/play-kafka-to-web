@@ -31,9 +31,10 @@ object ServerApp extends App {
 
     lazy val router = Router.from {
       case GET(p"/") => Action { implicit request =>
-        Results.Ok(html.index(Call("GET", "/questions").webSocketURL()))
+        val revision = sys.env.getOrElse("K_REVISION", "(no revision)")
+        Results.Ok(html.index(Call("GET", "/ws").webSocketURL(), revision))
       }
-      case GET(p"/questions") => WebSocket.accept[String, String] { _ =>
+      case GET(p"/ws") => WebSocket.accept[String, String] { _ =>
         val sink = Sink.ignore
         val source = kafkaSource(configuration.get[String]("kafka.topic")).map(_.value())
         Flow.fromSinkAndSource(sink, source)
